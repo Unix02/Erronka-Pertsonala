@@ -1,0 +1,144 @@
+#include <Traktorinoa.h>
+#include<UltraDistSensor.h>
+#include "LedControlMS.h"
+#include "binary.h"
+Traktorinoa niretraktorinoa;
+UltraDistSensor mysensor;
+LedControl lc=LedControl(6,3,5,1);
+float reading;
+unsigned long delaytime=1000;
+// happy face
+byte hf[8]= {B00111100,B01000010,B10100101,B10000001,B10100101,B10011001,B01000010,B00111100};
+// COCO
+byte co[8]={B00111110, B01111110,B11011100,B11111000,B11110000,B11111000,B01111100,B00111110};
+// Ghost
+byte gh[8]= {B00111100,B01111110,B11111111,B11011011,B11111111,B11111111,B11111111,B11011011};
+
+// no face
+byte no[8]= {B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000};
+// Flecha izq
+byte fi[8]= {B00001000,B00001100,B00000110,B11111111,B11111111,B00000110,B00001100,B00001000};
+// Flecha der
+byte fd[8]= {B00010000,B00110000,B01100000,B11111111,B11111111,B01100000,B00110000,B00010000};
+
+
+
+
+void setup()
+{
+   lc.shutdown(0,false);
+  // Set brightness to a medium value
+  lc.setIntensity(0,8);
+  // Clear the display
+  lc.clearDisplay(0); 
+  Serial.begin(9600);
+  mysensor.attach(7, 8); //Trigger pin , Echo pin
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  if (Serial.available() > 0) {
+    char data = Serial.read(); // bluetooth modulutik datorren datua irakurri
+    switch (data)
+    {
+      case 'a': niretraktorinoa.aurrera();drawFaces();Serial.println("Traktorinoa aurrera");  break; 
+      case 'b': niretraktorinoa.atzera();drawFaces();Serial.println("Traktorinoa atzera"); break; 
+      case 'c': niretraktorinoa.ezkerrera();Flechaizq();Serial.println("Traktorinoa ezkerrera"); break; 
+      case 'd': niretraktorinoa.eskuinera();Flechader();Serial.println("Traktorinoa eskuinera"); break; 
+      case 'p': niretraktorinoa.geratu(); noFaces();Serial.println("Traktorinoa geldirik"); break;  
+      case 't': drawFaces(); break; 
+      case 'e': COCO(); break;
+      case 'w': Ghost(); break; 
+      default : break;
+    }
+  }
+  delay(50);
+ 
+}
+
+void drawFaces(){
+ 
+  
+  // Display happy face
+  lc.setRow(0,0,hf[0]);
+  lc.setRow(0,1,hf[1]);
+  lc.setRow(0,2,hf[2]);
+  lc.setRow(0,3,hf[3]);
+  lc.setRow(0,4,hf[4]);
+  lc.setRow(0,5,hf[5]);
+  lc.setRow(0,6,hf[6]);
+  lc.setRow(0,7,hf[7]);
+  delay(delaytime);
+}
+
+void noFaces(){
+  // Display no face
+  lc.setRow(0,0,no[0]);
+  lc.setRow(0,1,no[1]);
+  lc.setRow(0,2,no[2]);
+  lc.setRow(0,3,no[3]);
+  lc.setRow(0,4,no[4]);
+  lc.setRow(0,5,no[5]);
+  lc.setRow(0,6,no[6]);
+  lc.setRow(0,7,no[7]);
+  
+  
+ 
+}
+void Flechaizq(){
+  // Display Flecha izq
+  lc.setRow(0,0,fi[0]);
+  lc.setRow(0,1,fi[1]);
+  lc.setRow(0,2,fi[2]);
+  lc.setRow(0,3,fi[3]);
+  lc.setRow(0,4,fi[4]);
+  lc.setRow(0,5,fi[5]);
+  lc.setRow(0,6,fi[6]);
+  lc.setRow(0,7,fi[7]);
+  
+  
+ 
+}
+void Flechader(){
+  // Display Flecha izq
+  lc.setRow(0,0,fd[0]);
+  lc.setRow(0,1,fd[1]);
+  lc.setRow(0,2,fd[2]);
+  lc.setRow(0,3,fd[3]);
+  lc.setRow(0,4,fd[4]);
+  lc.setRow(0,5,fd[5]);
+  lc.setRow(0,6,fd[6]);
+  lc.setRow(0,7,fd[7]);
+  
+  
+ 
+}
+void COCO(){
+ 
+  
+  // Display coco
+  lc.setRow(0,0,co[0]);
+  lc.setRow(0,1,co[1]);
+  lc.setRow(0,2,co[2]);
+  lc.setRow(0,3,co[3]);
+  lc.setRow(0,4,co[4]);
+  lc.setRow(0,5,co[5]);
+  lc.setRow(0,6,co[6]);
+  lc.setRow(0,7,co[7]);
+  delay(delaytime);
+}
+void Ghost(){
+ 
+  
+  // Display coco
+  lc.setRow(0,0,gh[0]);
+  lc.setRow(0,1,gh[1]);
+  lc.setRow(0,2,gh[2]);
+  lc.setRow(0,3,gh[3]);
+  lc.setRow(0,4,gh[4]);
+  lc.setRow(0,5,gh[5]);
+  lc.setRow(0,6,gh[6]);
+  lc.setRow(0,7,gh[7]);
+  delay(delaytime);
+}
