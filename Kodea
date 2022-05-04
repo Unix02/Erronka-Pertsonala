@@ -131,7 +131,7 @@ void COCO(){
 void Ghost(){
  
   
-  // Display coco
+  // Display Ghost
   lc.setRow(0,0,gh[0]);
   lc.setRow(0,1,gh[1]);
   lc.setRow(0,2,gh[2]);
